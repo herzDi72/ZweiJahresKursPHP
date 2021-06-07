@@ -1,0 +1,7 @@
+base   projekt
+author Frank Schiebel
+email  frank@ua25.de
+date   2021-06-07
+name   projekt plugin
+desc   Ein Plugin für eine Projektarbeit
+url    https://wiki.qg-moessingen.de/doku.php?id=faecher:informatik:oberstufe:datenbanken:projekt:dokuwiki_plugin:start
