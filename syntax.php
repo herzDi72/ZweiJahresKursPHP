@@ -37,6 +37,21 @@ class syntax_plugin_projekt extends DokuWiki_Syntax_Plugin
         return 222;
     }
 
+    public function printform() {
+ 
+        // Erzeuge ein neues "Form" Objekt
+        $form = new dokuwiki\Form\Form();
+ 
+        // Füge ein <input> Feld mit dem 'name'-Attribut 'inputName' und dem Label 'Dein Name' hinzu
+        $form->addTextInput('inputName', 'Dein Name');
+ 
+        // Füge einen "submit" Button hinzu
+        $form->addButton('submit', 'Senden');
+ 
+        // Erzeuge den HTML-Code zum Formular
+        return $form->toHTML();
+    }
+
     /**
      * Connect lookup pattern to lexer.
      *
@@ -47,7 +62,8 @@ class syntax_plugin_projekt extends DokuWiki_Syntax_Plugin
         // Wenn das Pattern gematcht wird springt das Plugin zur Methode "handle" 
         // ("Handle Match"), dabei wird er gematchte String als $match übergeben und kann weiter 
         // verarbeitet werden - s.u. 
-        $this->Lexer->addSpecialPattern('\{\{projekt>.+?\}\}', $mode, 'plugin_projekt');
+        $this->Lexer->addSpecialPattern('\{\{ptabelle>.*?\}\}', $mode, 'plugin_projekt');
+        $this->Lexer->addSpecialPattern('\{\{pliste>.*?\}\}', $mode, 'plugin_projekt');
     }
 
     /**
@@ -106,13 +122,38 @@ class syntax_plugin_projekt extends DokuWiki_Syntax_Plugin
         // wird als Ersetzung des gematche Patterns in der 
         // Wiki-Seite eingefügt. Der Browser will HTML sehen.
         $renderer->doc .= "<h2>Diese Überschrift kommt aus dem Plugin projekt</h2>";
-        $renderer->doc .= "<ul>";
-        $renderer->doc .= "<li>Als <tt>command</tt> wurde " . $command . " übergeben.</li>";
-        $renderer->doc .= "<li>Als <tt>options</tt> wurde " . $options . " übergeben.</li>";
-        $renderer->doc .= "</ul>";
+
+        // rufe die Methode "printform" auf - diese liefert HTML zurück
+        // das kann direkt an das renderer Attribut angehängt werden.
+        $renderer->doc .= $this->printform();
+        // Das gibt den Wert des mit POST übergebenen Eingabefelds
+        // aus. Das sollte schöner mit HTML fomatiert werden und nur 
+        // dann ausgegeben werden, wenn es auch gesetzt ist...
+        $renderer->doc .="<h2>Ein ganz herzliches Willkommen! </h2>";
+        $renderer->doc .="<p> Sehr geehrter ";
+        $renderer->doc .=$_POST['inputName'];
+        $renderer->doc .=" ,wir begruessen Sie ganz herzlich! </p>";
+
+        if ($command== 'ptabelle') {
+	        $renderer->doc .="<table border='1'>";
+            $renderer->doc .="<tr><th>command</th>";
+            $renderer->doc .="<td>. $command . </td></tr>";
+            $renderer->doc .="<tr><th>optiony</th>";
+            $renderer->doc .="<td>. $options .</td></tr>";
+            $renderer->doc .= "</table>";
+        }
+
+        if ($command== 'pliste') {
+	        $renderer->doc .="<ul'>";
+            $renderer->doc .="<li>command . $command . </li>";
+            $renderer->doc .="<li>option . $options . </li>";
+            $renderer->doc .="</ul>";
+        }
 
         // Alles gut: 
         return true;
     }
+
+    
 }
 
