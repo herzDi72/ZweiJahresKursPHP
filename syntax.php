@@ -55,6 +55,54 @@ class syntax_plugin_projekt extends DokuWiki_Syntax_Plugin
         return $form->toHTML();
     }
 
+    public function erzeugeFormularErfassen() {
+
+        $form = new dokuwiki\Form\Form();
+
+        //Info zu Gang (Backen / Kochen) einlesen
+        $form->addHTML('<br><hr><br>');
+        $form->addHTML('<b>Bitte wählen Sie aus: </b><br>');
+        $form->addRadioButton('gang', 'Kochen');
+        $form->addHTML('<br>');
+        $form->addRadioButton('gang', 'Backen');
+        $form->addHTML('<br><hr><br>');
+
+        //Info zur Herkunft einlesen
+        $optionsArray = array("Schwäbisch", "Italienisch", "Indisch", "Britisch");
+        $form->addHTML('<b>Bitte wählen Sie die passende Region aus: </b>');
+        $form->addDropdown('DropdownName', $optionsArray);
+        $form->addHTML('<br><hr><br>');
+
+        //Namen des Gerichtes einlsen
+        $form->addHTML('<br><hr><br>');
+        $form->addHTML('<b>Bitte geben Sie den Namen für Ihr Rezept ein: </b><br>');
+        $form->addTextInput('gerichtName', 'Name des Rezeptes: ');
+        $form->addHTML('<br><hr><br>');
+
+        //Liste der Zutaten
+        $form->addHTML('<br><hr><br>');
+        $form->addHTML('<b>Bitte geben Sie die Liste der Zutaten ein: </b><br>');
+        $form->addTextInput('listeZutaten', 'Liste der Zutaten: ');
+        $form->addHTML('<br><hr><br>');
+
+        //Liste der Zutaten
+        $form->addHTML('<br><hr><br>');
+        $form->addHTML('<b>Bitte geben Sie die Beschreibung der Zubereitung ein: </b><br>');
+        $form->addTextInput('zubereitung', 'Beschreibung der Zubereitung: ');
+        $form->addHTML('<br><hr><br>');
+
+         // Eingabe abschliessen
+         $form->addButton('submit', 'Eingabe abschließen');
+
+
+
+
+
+        $form->addHTML('<br>');
+
+        return $form->toHTML();
+    }
+
     /**
      * Connect lookup pattern to lexer.
      *
@@ -65,8 +113,8 @@ class syntax_plugin_projekt extends DokuWiki_Syntax_Plugin
         // Wenn das Pattern gematcht wird springt das Plugin zur Methode "handle" 
         // ("Handle Match"), dabei wird er gematchte String als $match übergeben und kann weiter 
         // verarbeitet werden - s.u. 
-        $this->Lexer->addSpecialPattern('\{\{ptabelle>.*?\}\}', $mode, 'plugin_projekt');
-        $this->Lexer->addSpecialPattern('\{\{pliste>.*?\}\}', $mode, 'plugin_projekt');
+        $this->Lexer->addSpecialPattern('\{\{rezepte>.*?\}\}', $mode, 'plugin_projekt');
+        // $this->Lexer->addSpecialPattern('\{\{pliste>.*?\}\}', $mode, 'plugin_projekt');
     }
 
     /**
@@ -136,29 +184,19 @@ class syntax_plugin_projekt extends DokuWiki_Syntax_Plugin
         // an $renderer->doc "angehängt" wird, 
         // wird als Ersetzung des gematche Patterns in der 
         // Wiki-Seite eingefügt. Der Browser will HTML sehen.
-        $renderer->doc .= "<h2>Diese Überschrift kommt aus dem Plugin projekt</h2>";
-
         // rufe die Methode "printform" auf - diese liefert HTML zurück
         // das kann direkt an das renderer Attribut angehängt werden.
-        $renderer->doc .= $this->printform();
+        // $renderer->doc .= $this->printform();
+
         // Das gibt den Wert des mit POST übergebenen Eingabefelds
         // aus. Das sollte schöner mit HTML fomatiert werden und nur 
         // dann ausgegeben werden, wenn es auch gesetzt ist...
-        $renderer->doc .="<h2>Ein ganz herzliches Willkommen! </h2>";
-        $renderer->doc .="<p> Sehr geehrter ";
-        $renderer->doc .=$_POST['inputName'];
-        $renderer->doc .=" ,wir begruessen Sie ganz herzlich! </p>";
 
-        if ($command== 'ptabelle') {
-	        $renderer->doc .="<table border='1'>";
-            $renderer->doc .="<tr><th>command</th>";
-            $renderer->doc .="<td>. $command . </td></tr>";
-            $renderer->doc .="<tr><th>optiony</th>";
-            $renderer->doc .="<td>. $options .</td></tr>";
-            $renderer->doc .= "</table>";
+        if ($options== 'erfassen') {
+            $renderer->doc .= $this->erzeugeFormularErfassen();
         }
 
-        if ($command== 'pliste') {
+        if ($options== 'suchen') {
 	        $renderer->doc .="<ul'>";
             $renderer->doc .="<li>command . $command . </li>";
             $renderer->doc .="<li>option . $options . </li>";
