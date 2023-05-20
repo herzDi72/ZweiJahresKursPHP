@@ -7,3 +7,9 @@
 
 //$conf['fixme']    = 'FIXME';
 
+$conf['dbusername'] = '';
+$conf['dbpasswd'] = '';
+$conf['dbname'] = '';
+$conf['dbhost'] = 'localhost';
+
+?>

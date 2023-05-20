@@ -120,8 +120,16 @@ class syntax_plugin_projekt extends DokuWiki_Syntax_Plugin
         $options = $data[1];
 
         // Erzeugen einer Verbindung zur Datenbank
-        // Konstruktor der Klasse mysqldb aufrufen
-        $mydb = new mysqldb("2jk_dbu41", "2jk_dbu412jk23" , "2jk_dbu41");
+        // Zugangsdaten aus den Einstellungen des
+        // DokuWiki abrufen
+        $dbuser = $this->getConf('dbusername');
+        $dbpasswd = $this->getConf('dbpasswd'); 
+        $dbname = $this->getConf('dbname');
+        $dbhost = $this->getConf('dbhost');
+
+        //Konstruktor von mysqldb aufrufen um
+        //Vergindung herzustellen
+        $dbhandle = new mysqldb($dbuser, $dbpasswd, $dbname, $dbhost);
 
 
         // Alles was mit dem Verkettungs-Operator "."

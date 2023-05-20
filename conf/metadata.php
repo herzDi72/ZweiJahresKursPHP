@@ -8,3 +8,10 @@
 
 //$meta['fixme'] = array('string');
 
+$meta['dbusername'] = array('string');
+$meta['dbpasswd'] = array('string');
+$meta['dbname'] = array('string');
+$meta['dbhost'] = array('string');
+
+
+?>
