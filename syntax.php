@@ -11,6 +11,9 @@ if (!defined('DOKU_INC')) {
     die();
 }
 
+// Klassendateien einbinden
+require("mysqldb.php");
+
 class syntax_plugin_projekt extends DokuWiki_Syntax_Plugin
 {
     /**
@@ -115,6 +118,10 @@ class syntax_plugin_projekt extends DokuWiki_Syntax_Plugin
         // das klamüsern wir jetzt mal auseinander:
         $command = $data[0];
         $options = $data[1];
+
+        // Erzeugen einer Verbindung zur Datenbank
+        // Konstruktor der Klasse mysqldb aufrufen
+        $mydb = new mysqldb("2jk_dbu41", "2jk_dbu412jk23" , "2jk_dbu41");
 
 
         // Alles was mit dem Verkettungs-Operator "."
